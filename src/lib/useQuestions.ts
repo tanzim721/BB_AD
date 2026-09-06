@@ -1,147 +1,93 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from './supabase'
-import { Question, MCQuestion, CQuestion } from '@/types'
+import { Question } from '@/types'
 
-export function useQuestions(topicId: number | null) {
+export function useQuestions(topicId: number | null, subtopic?: string) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchQuestions = useCallback(async () => {
     if (!topicId) return
     setLoading(true)
-    const { data, error } = await supabase
-      .from('questions')
-      .select('*')
-      .eq('topic_id', topicId)
-      .order('created_at', { ascending: false })
+    setError(null)
+    try {
+      const params = new URLSearchParams()
+      params.append('topicId', topicId.toString())
+      if (subtopic) params.append('subtopic', subtopic)
 
-    if (!error && data) {
-      setQuestions(data.map(dbToQuestion))
+      const res = await fetch(`/api/questions?${params}`)
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to fetch questions')
+        setQuestions([])
+        return
+      }
+
+      setQuestions(data.questions || [])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch questions')
+      setQuestions([])
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
-  }, [topicId])
+  }, [topicId, subtopic])
 
   useEffect(() => {
     fetchQuestions()
   }, [fetchQuestions])
 
-  const addMCQ = async (q: Omit<MCQuestion, 'id' | 'createdAt'>) => {
-    const { data, error } = await supabase
-      .from('questions')
-      .insert({
-        topic_id: q.topicId,
-        type: 'mcq',
-        question: q.question,
-        option_a: q.optionA,
-        option_b: q.optionB,
-        option_c: q.optionC,
-        option_d: q.optionD,
-        correct_answer: q.correct,
-        subtopic: q.subtopic,
-        explanation: q.explanation,
-      })
-      .select()
-      .single()
-
-    if (!error && data) {
-      setQuestions((prev) => [dbToQuestion(data), ...prev])
-    }
-    return { error }
+  const addMCQ = async (q: any) => {
+    return addBulk([q])
   }
 
-  const addCQ = async (q: Omit<CQuestion, 'id' | 'createdAt'>) => {
-    const { data, error } = await supabase
-      .from('questions')
-      .insert({
-        topic_id: q.topicId,
-        type: 'cq',
-        stem: q.stem,
-        parts: q.parts,
-        subtopic: q.subtopic,
-      })
-      .select()
-      .single()
-
-    if (!error && data) {
-      setQuestions((prev) => [dbToQuestion(data), ...prev])
-    }
-    return { error }
+  const addCQ = async (q: any) => {
+    return addBulk([q])
   }
 
   const addBulk = async (qs: Omit<Question, 'id' | 'createdAt'>[]) => {
-    const rows = qs.map((q) => {
-      if (q.type === 'mcq') {
-        const m = q as Omit<MCQuestion, 'id' | 'createdAt'>
-        return {
-          topic_id: m.topicId,
-          type: 'mcq',
-          question: m.question,
-          option_a: m.optionA,
-          option_b: m.optionB,
-          option_c: m.optionC,
-          option_d: m.optionD,
-          correct_answer: m.correct,
-          subtopic: m.subtopic,
-          explanation: m.explanation,
-        }
-      } else {
-        const c = q as Omit<CQuestion, 'id' | 'createdAt'>
-        return {
-          topic_id: c.topicId,
-          type: 'cq',
-          stem: c.stem,
-          parts: c.parts,
-          subtopic: c.subtopic,
-        }
-      }
-    })
+    if (!topicId) return { error: 'No topic selected' }
 
-    const { data, error } = await supabase.from('questions').insert(rows).select()
-    if (!error && data) {
-      setQuestions((prev) => [...data.map(dbToQuestion), ...prev])
+    try {
+      const res = await fetch('/api/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topicId, questions: qs }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        return { error: data.error || 'Failed to add questions' }
+      }
+
+      // Refetch questions after adding
+      await fetchQuestions()
+      return { error: null }
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : 'Failed to add questions' }
     }
-    return { error }
   }
 
   const deleteQuestion = async (id: string) => {
-    const { error } = await supabase.from('questions').delete().eq('id', id)
-    if (!error) {
+    try {
+      const res = await fetch(`/api/questions/${id}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        return { error: data.error || 'Failed to delete question' }
+      }
+
+      // Remove from local state
       setQuestions((prev) => prev.filter((q) => q.id !== id))
+      return { error: null }
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : 'Failed to delete question' }
     }
-    return { error }
   }
 
-  return { questions, loading, addMCQ, addCQ, addBulk, deleteQuestion, refetch: fetchQuestions }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function dbToQuestion(row: any): Question {
-  if (row.type === 'mcq') {
-    return {
-      id: row.id,
-      topicId: row.topic_id,
-      type: 'mcq',
-      question: row.question,
-      optionA: row.option_a,
-      optionB: row.option_b,
-      optionC: row.option_c,
-      optionD: row.option_d,
-      correct: row.correct_answer,
-      subtopic: row.subtopic || '',
-      explanation: row.explanation || '',
-      createdAt: row.created_at,
-    } as MCQuestion
-  } else {
-    return {
-      id: row.id,
-      topicId: row.topic_id,
-      type: 'cq',
-      stem: row.stem,
-      parts: row.parts || [],
-      subtopic: row.subtopic || '',
-      createdAt: row.created_at,
-    } as CQuestion
-  }
+  return { questions, loading, error, addMCQ, addCQ, addBulk, deleteQuestion, refetch: fetchQuestions }
 }

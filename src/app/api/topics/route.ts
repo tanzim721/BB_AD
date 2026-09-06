@@ -1,0 +1,25 @@
+import { supabase } from '@/lib/supabase'
+import { NextResponse } from 'next/server'
+
+export async function GET() {
+  try {
+    const { data, error } = await supabase
+      .from('topics')
+      .select('*')
+      .order('id', { ascending: true })
+
+    if (error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({ topics: data })
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : 'Server error' },
+      { status: 500 }
+    )
+  }
+}
