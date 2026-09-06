@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { TOPICS } from '@/lib/topics'
+import { useTopics } from '@/lib/useTopics'
 
 export default function Home() {
+  const { topics, loading } = useTopics()
+
   return (
     <div className="home">
       <div className="hero">
@@ -16,13 +18,18 @@ export default function Home() {
       </div>
 
       <div className="topics-grid">
-        {TOPICS.map((topic) => (
-          <Link key={topic.id} href={`/topics/${topic.id}`} className="topic-card">
-            <div className="card-num">{String(topic.id).padStart(2, '0')}</div>
-            <div className="card-name">{topic.name}</div>
-            <div className="card-sub">{topic.subtopics.length} subtopics</div>
-          </Link>
-        ))}
+        {loading ? (
+          <div className="loading">Loading topics...</div>
+        ) : (
+          topics.map((topic) => (
+            <Link key={topic.id} href={`/topics/${topic.id}`} className="topic-card">
+              <div className="card-icon">{topic.icon}</div>
+              <div className="card-name">{topic.name}</div>
+              <div className="card-sub">{topic.subtopics.length} subtopics</div>
+              <div className="card-arrow">→</div>
+            </Link>
+          ))
+        )}
       </div>
 
       <style jsx>{`
@@ -116,17 +123,13 @@ export default function Home() {
           transform: translateY(-2px);
         }
 
-        .card-num {
-          font-size: 12px;
-          font-weight: 700;
-          color: var(--text-tertiary);
-          margin-bottom: 8px;
-          font-variant-numeric: tabular-nums;
-          letter-spacing: 0.05em;
+        .card-icon {
+          font-size: 32px;
+          margin-bottom: 12px;
         }
 
         .card-name {
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 700;
           color: var(--text-primary);
           margin-bottom: 8px;
@@ -137,6 +140,63 @@ export default function Home() {
           font-size: 13px;
           color: var(--text-tertiary);
           margin-top: auto;
+          margin-bottom: 8px;
+        }
+
+        .card-arrow {
+          font-size: 18px;
+          color: var(--accent-primary);
+          opacity: 0;
+          transform: translateX(-4px);
+          transition: all 0.2s ease-in-out;
+        }
+
+        .topic-card:hover .card-arrow {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        .loading {
+          text-align: center;
+          padding: 48px 20px;
+          color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+          .home {
+            padding: 24px;
+          }
+
+          .hero-title {
+            font-size: 32px;
+          }
+
+          .topics-grid {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+          }
+
+          .topic-card {
+            padding: 16px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .home {
+            padding: 16px;
+          }
+
+          .hero-title {
+            font-size: 24px;
+          }
+
+          .hero-desc {
+            font-size: 14px;
+          }
+
+          .topics-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
       `}</style>
     </div>
