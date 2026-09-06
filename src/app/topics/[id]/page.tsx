@@ -1,14 +1,14 @@
 'use client'
 
-import { useState, use } from 'react'
-import { TOPICS } from '@/lib/topics'
+import { useState, use, useEffect } from 'react'
+import { useTopics } from '@/lib/useTopics'
 import { useQuestions } from '@/lib/useQuestions'
 import MCQCard from '@/components/MCQCard'
 import CQCard from '@/components/CQCard'
 import AddMCQModal from '@/components/AddMCQModal'
 import AddCQModal from '@/components/AddCQModal'
 import UploadModal from '@/components/UploadModal'
-import { MCQuestion, CQuestion } from '@/types'
+import { MCQuestion, CQuestion, Topic } from '@/types'
 import { notFound } from 'next/navigation'
 
 type Tab = 'overview' | 'mcq' | 'cq'
@@ -16,13 +16,45 @@ type Tab = 'overview' | 'mcq' | 'cq'
 export default function TopicPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const topicId = parseInt(id)
-  const topic = TOPICS.find((t) => t.id === topicId)
-  if (!topic) notFound()
 
+  // Call all hooks at the top, before any conditional logic
+  const { topics, loading: topicsLoading, error: topicsError } = useTopics()
   const { questions, loading, addMCQ, addCQ, addBulk, deleteQuestion } = useQuestions(topicId)
+
+  const [topic, setTopic] = useState<Topic | null>(null)
+  const [topicLoaded, setTopicLoaded] = useState(false)
   const [tab, setTab] = useState<Tab>('overview')
   const [modal, setModal] = useState<'none' | 'mcq' | 'cq' | 'upload'>('none')
   const [preselectedSub, setPreselectedSub] = useState('')
+
+  useEffect(() => {
+    // Only try to find topic after topics are loaded
+    if (!topicsLoading && topics && topics.length > 0) {
+      const found = topics.find((t) => t.id === topicId)
+      setTopic(found || null)
+      setTopicLoaded(true) // Mark as loaded regardless of whether found
+    }
+  }, [topics, topicId, topicsLoading])
+
+  // Show loading while topics are being fetched
+  if (topicsLoading) {
+    return <div className="page"><div className="loading">Loading topic data…</div></div>
+  }
+
+  // Show error if topics failed to load
+  if (topicsError) {
+    return <div className="page"><div className="error">Error: {topicsError}</div></div>
+  }
+
+  // Show notFound after topics are loaded but topic not found
+  if (topicLoaded && !topic) {
+    return notFound()
+  }
+
+  // Still waiting for topics to load
+  if (!topicLoaded || !topic) {
+    return <div className="page"><div className="loading">Loading…</div></div>
+  }
 
   const mcqs = questions.filter((q) => q.type === 'mcq') as MCQuestion[]
   const cqs = questions.filter((q) => q.type === 'cq') as CQuestion[]
