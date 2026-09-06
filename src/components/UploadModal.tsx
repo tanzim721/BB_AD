@@ -96,21 +96,21 @@ export default function UploadModal({ topic, onImport, onClose }: UploadModalPro
     if (!toImport.length) { setErrorMsg('Select at least one question.'); return }
     setImporting(true)
 
-    const questions = toImport.map((item): Omit<MCQuestion | CQuestion, 'id' | 'createdAt'> => {
+    const questions: Array<Omit<MCQuestion | CQuestion, 'id' | 'createdAt'>> = toImport.map((item) => {
       if (item.type === 'mcq') {
         return {
           topicId: topic.id, type: 'mcq',
           question: item.q, optionA: item.a, optionB: item.b, optionC: item.c, optionD: item.d,
           correct: (item.correct?.toLowerCase() || 'a') as 'a' | 'b' | 'c' | 'd',
           subtopic, explanation: item.exp || '',
-        }
+        } as Omit<MCQuestion, 'id' | 'createdAt'>
       } else {
         return {
           topicId: topic.id, type: 'cq',
           stem: item.stem,
           parts: item.parts.map((p) => ({ question: p.q, answer: p.ans })),
           subtopic,
-        }
+        } as Omit<CQuestion, 'id' | 'createdAt'>
       }
     })
 

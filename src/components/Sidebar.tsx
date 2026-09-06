@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { TOPICS } from '@/lib/topics'
@@ -14,7 +14,7 @@ interface SidebarProps {
 }
 
 // Icon mapping for topics with colors
-const TOPIC_ICONS: Record<number, { icon: JSX.Element; color: string }> = {
+const TOPIC_ICONS: Record<number, { icon: React.ReactElement; color: string }> = {
   1: { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>, color: '#0ea5e9' },
   2: { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>, color: '#8b5cf6' },
   3: { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>, color: '#ec4899' },
