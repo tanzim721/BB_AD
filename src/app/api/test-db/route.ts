@@ -2,11 +2,15 @@ import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const results = {
+  const results: {
+    environment: Record<string, string>
+    tests: Record<string, string | null>
+    error: string | null
+  } = {
     environment: {
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ Set' : '❌ Missing',
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing',
-      anthropicKey: process.env.ANTHROPIC_API_KEY ? '✅ Set' : '❌ Missing',
+      // anthropicKey: process.env.ANTHROPIC_API_KEY ? '✅ Set' : '❌ Missing',
     },
     tests: {
       topics: null,

@@ -8,6 +8,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing image or prompt' }, { status: 400 })
     }
 
+    // Check if Anthropic API key is set
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json({
+        error: 'Anthropic API key not configured. Please set ANTHROPIC_API_KEY in environment variables.'
+      }, { status: 500 })
+    }
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
