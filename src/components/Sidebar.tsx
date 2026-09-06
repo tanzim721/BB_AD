@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { TOPICS } from '@/lib/topics'
+import { useTopics } from '@/lib/useTopics'
 
 interface TopicCounts {
   [topicId: number]: { mcq: number; cq: number }
@@ -31,13 +31,14 @@ const TOPIC_ICONS: Record<number, { icon: React.ReactElement; color: string }> =
 }
 
 export default function Sidebar({ counts = {} }: SidebarProps) {
+  const { topics, loading } = useTopics()
   const [search, setSearch] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [expandedCategory, setExpandedCategory] = useState<string | null>('Core')
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
   const pathname = usePathname()
 
-  const filtered = TOPICS.filter((t) =>
+  const filtered = topics.filter((t) =>
     t.name.toLowerCase().includes(search.toLowerCase())
   )
 
@@ -46,12 +47,12 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
     { name: 'Advanced', ids: [7, 8, 9, 10, 11, 12, 13], icon: '🚀' },
   ]
 
-  const coreCount = TOPICS.filter(t => [1, 2, 3, 4, 5, 6].includes(t.id)).reduce((sum, t) => {
+  const coreCount = topics.filter(t => [1, 2, 3, 4, 5, 6].includes(t.id)).reduce((sum, t) => {
     const c = counts[t.id]
     return sum + (c?.mcq || 0) + (c?.cq || 0)
   }, 0)
 
-  const advancedCount = TOPICS.filter(t => [7, 8, 9, 10, 11, 12, 13].includes(t.id)).reduce((sum, t) => {
+  const advancedCount = topics.filter(t => [7, 8, 9, 10, 11, 12, 13].includes(t.id)).reduce((sum, t) => {
     const c = counts[t.id]
     return sum + (c?.mcq || 0) + (c?.cq || 0)
   }, 0)
@@ -172,7 +173,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           // Normal categorized view
           <>
             {topicsByCategory.map((category) => {
-              const categoryTopics = TOPICS.filter((t) => category.ids.includes(t.id))
+              const categoryTopics = topics.filter((t) => category.ids.includes(t.id))
               const isExpanded = expandedCategory === category.name
               const catCount = category.name === 'Core' ? coreCount : advancedCount
               return (
@@ -238,7 +239,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
       <div className="sidebar-footer">
         <div className="footer-stats">
           <div className="stat">
-            <div className="stat-value">{TOPICS.length}</div>
+            <div className="stat-value">{topics.length}</div>
             <div className="stat-label">Topics</div>
           </div>
           <div className="stat">
