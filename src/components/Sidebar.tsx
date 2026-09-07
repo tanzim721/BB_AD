@@ -998,21 +998,19 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             left: 0;
             top: 0;
             bottom: 0;
-            width: 100%;
-            max-width: 320px;
+            width: 320px;
             height: 100vh;
-            max-height: none;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: none;
             z-index: 50;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
+            transform: translateX(-320px);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
             overflow-x: hidden;
           }
 
           .sidebar.mobile-open {
-            transform: translateX(0);
+            transform: translateX(0px);
           }
 
           .sidebar-close-btn {
@@ -1047,12 +1045,14 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             z-index: 40;
-            animation: fadeIn 0.2s ease-out;
+            opacity: 1;
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: auto;
             cursor: pointer;
+            animation: backdropFadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
           }
 
-          @keyframes fadeIn {
+          @keyframes backdropFadeIn {
             from {
               opacity: 0;
             }
