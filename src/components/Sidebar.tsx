@@ -311,11 +311,23 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           overflow: hidden;
           color: white;
           position: relative;
-          transform: translateX(0) !important;
+          transform: translateX(0);
+          transition: none;
         }
 
         .sidebar-backdrop {
           display: none !important;
+        }
+
+        @media (min-width: 641px) {
+          .sidebar {
+            transform: translateX(0);
+            transition: none;
+            position: relative;
+            width: 320px;
+            height: calc(100vh - 60px);
+            z-index: auto;
+          }
         }
 
         .sidebar::before {
