@@ -912,7 +912,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           .sidebar {
             width: 100%;
             height: auto;
-            max-height: 200px;
+            max-height: 180px;
             border-right: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             overflow-y: auto;
@@ -929,6 +929,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
           .search-wrap {
             padding: 8px 10px;
+            font-size: 12px;
           }
 
           .topic-link.list {
@@ -937,8 +938,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           }
 
           .topic-link.grid {
-            min-height: 80px;
-            padding: 10px 6px;
+            min-height: 70px;
+            padding: 8px 6px;
           }
 
           .topic-icon {
@@ -949,15 +950,17 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           .category-header {
             padding: 10px 12px;
             font-size: 12px;
+            margin-bottom: 6px;
           }
 
           .category-items.grid {
             grid-template-columns: 1fr;
-            gap: 6px;
+            gap: 4px;
+            padding: 0 2px;
           }
 
           .topic-link.grid {
-            padding: 8px 8px;
+            padding: 8px 6px;
             gap: 8px;
           }
 
@@ -977,6 +980,33 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           .meta-item {
             font-size: 8px;
             padding: 1px 4px;
+          }
+
+          .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+          }
+
+          .footer-stats {
+            gap: 8px;
+          }
+
+          .stat {
+            padding: 8px;
+            font-size: 11px;
+          }
+
+          .stat-value {
+            font-size: 16px;
+            margin-bottom: 2px;
+          }
+
+          .stat-label {
+            font-size: 9px;
+          }
+
+          .topic-nav {
+            padding: 8px;
           }
         }
       `}</style>

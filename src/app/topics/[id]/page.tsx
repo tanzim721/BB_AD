@@ -482,6 +482,145 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
           line-height: 1.7;
           font-weight: 500;
         }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+          .page-header {
+            padding: 20px 16px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+          }
+
+          .header-left {
+            width: 100%;
+            flex-direction: column;
+            gap: 8px;
+          }
+
+          .topic-title {
+            font-size: 24px;
+          }
+
+          .header-actions {
+            width: 100%;
+            margin-left: 0;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 8px;
+          }
+
+          .btn {
+            padding: 10px 14px;
+            font-size: 13px;
+            flex: 1;
+            min-width: 100px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .page {
+            padding: 0;
+          }
+
+          .page-header {
+            padding: 16px 12px;
+            gap: 12px;
+            border-radius: 0;
+          }
+
+          .topic-title {
+            font-size: 20px;
+            font-weight: 800;
+          }
+
+          .sub-count {
+            font-size: 12px;
+            padding: 3px 8px;
+          }
+
+          .header-actions {
+            width: 100%;
+            flex-direction: column;
+            gap: 8px;
+          }
+
+          .btn {
+            padding: 12px 14px;
+            font-size: 13px;
+            width: 100%;
+            justify-content: center;
+          }
+
+          .tabs {
+            padding: 0 12px;
+            gap: 0;
+          }
+
+          .tab {
+            padding: 12px 14px;
+            font-size: 12px;
+            flex: 1;
+            text-align: center;
+            border-radius: 0;
+          }
+
+          .content {
+            padding: 16px 12px;
+          }
+
+          .stats-row {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+          }
+
+          .stat-card {
+            padding: 16px 12px;
+            text-align: center;
+          }
+
+          .stat-val {
+            font-size: 28px;
+          }
+
+          .stat-lbl {
+            font-size: 11px;
+          }
+
+          .section-label {
+            font-size: 12px;
+            margin-bottom: 12px;
+          }
+
+          .chip {
+            padding: 8px 12px;
+            font-size: 12px;
+            flex: 0 1 auto;
+          }
+
+          .chip-grid {
+            gap: 6px;
+            margin-bottom: 12px;
+          }
+
+          .hint {
+            font-size: 12px;
+            margin-top: 10px;
+          }
+
+          .overview {
+            padding: 0;
+          }
+
+          .empty {
+            padding: 60px 16px;
+          }
+
+          .empty p {
+            font-size: 14px;
+          }
+        }
       `}</style>
     </div>
   )
