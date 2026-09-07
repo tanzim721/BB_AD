@@ -68,7 +68,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             </svg>
           </div>
           <div className="brand-text">
-            <div className="brand-title">BD Bank Prep</div>
+            <div className="brand-title">BD  </div>
             <div className="brand-subtitle">AD(ICT) Exam</div>
           </div>
         </div>

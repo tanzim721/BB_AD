@@ -21,7 +21,7 @@ export default function Header() {
                 </svg>
               </div>
               <div className="logo-text">
-                <div className="logo-title">BD Bank Prep</div>
+                <div className="logo-title">BD  </div>
                 <div className="logo-subtitle">AD(ICT) Exam</div>
               </div>
             </div>
