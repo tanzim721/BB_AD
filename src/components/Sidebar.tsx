@@ -910,13 +910,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
         @media (max-width: 640px) {
           .sidebar {
-            width: 100%;
-            height: auto;
-            max-height: 180px;
-            border-right: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            overflow-y: auto;
-            flex-shrink: 0;
+            display: none;
           }
 
           .sidebar-header {

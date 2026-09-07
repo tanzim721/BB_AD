@@ -521,76 +521,109 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         @media (max-width: 640px) {
           .page {
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
           }
 
           .page-header {
-            padding: 16px 12px;
-            gap: 12px;
+            padding: 14px 12px;
+            gap: 10px;
             border-radius: 0;
+            flex-direction: column;
+            align-items: stretch;
+            background: var(--surface-elevated);
+            border-bottom: 2px solid var(--border-light);
+          }
+
+          .header-left {
+            width: 100%;
+            gap: 8px;
           }
 
           .topic-title {
-            font-size: 20px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 900;
+            margin: 0;
           }
 
           .sub-count {
-            font-size: 12px;
-            padding: 3px 8px;
+            font-size: 11px;
+            padding: 2px 6px;
+            width: fit-content;
           }
 
           .header-actions {
             width: 100%;
-            flex-direction: column;
-            gap: 8px;
+            flex-direction: row;
+            gap: 6px;
+            margin-left: 0;
           }
 
           .btn {
-            padding: 12px 14px;
-            font-size: 13px;
-            width: 100%;
+            padding: 10px 12px;
+            font-size: 12px;
+            flex: 1;
             justify-content: center;
+            border-radius: 8px;
+          }
+
+          .btn svg {
+            width: 14px;
+            height: 14px;
           }
 
           .tabs {
             padding: 0 12px;
             gap: 0;
+            border-bottom: 2px solid var(--border-light);
+            background: var(--surface-elevated);
           }
 
           .tab {
-            padding: 12px 14px;
-            font-size: 12px;
+            padding: 12px 0;
+            font-size: 11px;
             flex: 1;
             text-align: center;
             border-radius: 0;
+            margin-bottom: 0;
+            border-bottom: 3px solid transparent;
+          }
+
+          .tab.active {
+            border-bottom-color: #0284c7;
+            color: #0284c7;
           }
 
           .content {
-            padding: 16px 12px;
+            padding: 12px;
+            flex: 1;
+            overflow-y: auto;
           }
 
           .stats-row {
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 24px;
+            gap: 8px;
+            margin-bottom: 16px;
           }
 
           .stat-card {
-            padding: 16px 12px;
+            padding: 12px 10px;
             text-align: center;
+            border-radius: 8px;
           }
 
           .stat-val {
-            font-size: 28px;
+            font-size: 22px;
           }
 
           .stat-lbl {
-            font-size: 11px;
+            font-size: 10px;
           }
 
           .section-label {
-            font-size: 12px;
-            margin-bottom: 12px;
+            font-size: 11px;
+            margin-bottom: 10px;
           }
 
           .chip {
@@ -601,12 +634,12 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
 
           .chip-grid {
             gap: 6px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
           }
 
           .hint {
-            font-size: 12px;
-            margin-top: 10px;
+            font-size: 11px;
+            margin-top: 8px;
           }
 
           .overview {
@@ -614,11 +647,16 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
           }
 
           .empty {
-            padding: 60px 16px;
+            padding: 40px 16px;
+          }
+
+          .empty svg {
+            width: 32px;
+            height: 32px;
           }
 
           .empty p {
-            font-size: 14px;
+            font-size: 13px;
           }
         }
       `}</style>

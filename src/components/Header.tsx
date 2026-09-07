@@ -714,24 +714,33 @@ export default function Header() {
 
           .header-stats {
             padding: 10px 12px;
-            gap: 8px;
+            gap: 12px;
+            justify-content: space-between;
+            border-top: none;
           }
 
           .stat-item {
-            padding: 6px 8px;
+            padding: 4px 0;
+            flex: 1;
+            text-align: center;
+            gap: 4px;
+          }
+
+          .stat-divider {
+            display: none !important;
           }
 
           .stat-value {
-            font-size: 12px;
+            font-size: 14px;
           }
 
           .stat-label {
-            font-size: 8px;
+            font-size: 9px;
           }
 
           .progress-bar {
-            width: 50px;
-            height: 6px;
+            width: 60px;
+            height: 4px;
           }
 
           .notification-dropdown,

@@ -184,7 +184,7 @@ html, body {
   .main-content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-sm);
+    padding: 0;
     min-height: 0;
   }
 }
