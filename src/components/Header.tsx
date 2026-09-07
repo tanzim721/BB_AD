@@ -241,19 +241,16 @@ export default function Header() {
         }
 
         .logo-title {
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 900;
-          background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #0284c7;
           letter-spacing: -0.02em;
         }
 
         .logo-subtitle {
-          font-size: 12px;
-          color: var(--accent-primary);
-          font-weight: 700;
+          font-size: 13px;
+          color: #0284c7;
+          font-weight: 800;
           letter-spacing: 0.06em;
           text-transform: uppercase;
         }
@@ -271,7 +268,7 @@ export default function Header() {
           align-items: center;
           gap: 10px;
           font-size: 14px;
-          color: var(--text-primary);
+          color: #1f2937;
           font-weight: 700;
         }
 
@@ -279,28 +276,28 @@ export default function Header() {
           display: flex;
           align-items: center;
           gap: 6px;
-          color: var(--accent-primary);
+          color: #0284c7;
           text-decoration: none;
-          font-weight: 700;
+          font-weight: 800;
           transition: all 0.2s;
           padding: 6px 10px;
           border-radius: 6px;
         }
 
         .breadcrumb a:hover {
-          background: var(--accent-light);
-          color: var(--accent-secondary);
+          background: #dbeafe;
+          color: #0284c7;
         }
 
         .separator {
-          color: var(--text-secondary);
+          color: #6b7280;
           font-weight: 400;
         }
 
         .current {
-          color: var(--accent-primary);
-          font-weight: 800;
-          background: var(--accent-light);
+          color: #0284c7;
+          font-weight: 900;
+          background: #dbeafe;
           padding: 6px 12px;
           border-radius: 6px;
           letter-spacing: -0.01em;
@@ -309,7 +306,7 @@ export default function Header() {
         .header-title {
           font-size: 18px;
           font-weight: 900;
-          color: var(--text-primary);
+          color: #1f2937;
           letter-spacing: -0.02em;
           display: flex;
           align-items: center;
@@ -356,15 +353,15 @@ export default function Header() {
           background: none;
           outline: none;
           font-size: 13px;
-          color: var(--text-primary);
+          color: #1f2937;
           width: 100%;
           font-family: inherit;
-          font-weight: 500;
+          font-weight: 600;
         }
 
         .search-bar input::placeholder {
-          color: var(--text-secondary);
-          opacity: 0.7;
+          color: #6b7280;
+          opacity: 1;
         }
 
         .header-actions {
@@ -378,9 +375,9 @@ export default function Header() {
           width: 38px;
           height: 38px;
           border-radius: var(--radius-lg);
-          border: 1.5px solid var(--border-light);
+          border: 1.5px solid #e5e7eb;
           background: white;
-          color: var(--text-primary);
+          color: #374151;
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -388,14 +385,14 @@ export default function Header() {
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-          font-weight: 600;
+          font-weight: 700;
         }
 
         .header-icon-btn:hover {
-          background: var(--accent-light);
-          border-color: var(--accent-primary);
-          color: var(--accent-primary);
-          box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+          background: #dbeafe;
+          border-color: #0284c7;
+          color: #0284c7;
+          box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
         }
 
         .header-icon-btn:active {
@@ -448,19 +445,16 @@ export default function Header() {
 
         .stat-label {
           font-size: 12px;
-          font-weight: 800;
-          color: var(--text-secondary);
+          font-weight: 900;
+          color: #4b5563;
           text-transform: uppercase;
           letter-spacing: 0.08em;
         }
 
         .stat-value {
-          font-size: 22px;
+          font-size: 24px;
           font-weight: 900;
-          background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #0284c7;
           font-variant-numeric: tabular-nums;
           letter-spacing: -0.02em;
         }
@@ -592,9 +586,9 @@ export default function Header() {
         }
 
         .header-icon-btn.active {
-          background: var(--accent-light);
-          border-color: var(--accent-primary);
-          color: var(--accent-primary);
+          background: #dbeafe;
+          border-color: #0284c7;
+          color: #0284c7;
         }
 
         @media (max-width: 1024px) {
