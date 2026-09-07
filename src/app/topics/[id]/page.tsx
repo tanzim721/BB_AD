@@ -173,7 +173,7 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
                 <p>No MCQs yet. Add one manually or upload an image.</p>
               </div>
             ) : (
-              mcqs.map((q) => <MCQCard key={q.id} question={q} onDelete={deleteQuestion} />)
+              mcqs.map((q, idx) => <MCQCard key={q.id} question={q} onDelete={deleteQuestion} questionNumber={idx + 1} totalQuestions={mcqs.length} />)
             )}
           </div>
         )}
@@ -189,7 +189,7 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
                 <p>No CQs yet. Use the &quot;Add CQ&quot; button above.</p>
               </div>
             ) : (
-              cqs.map((q) => <CQCard key={q.id} question={q} onDelete={deleteQuestion} />)
+              cqs.map((q, idx) => <CQCard key={q.id} question={q} onDelete={deleteQuestion} questionNumber={idx + 1} totalQuestions={cqs.length} />)
             )}
           </div>
         )}

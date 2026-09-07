@@ -5,15 +5,20 @@ import { MCQuestion } from '@/types'
 interface MCQCardProps {
   question: MCQuestion
   onDelete: (id: string) => void
+  questionNumber?: number
+  totalQuestions?: number
 }
 
 const OPTIONS = ['a', 'b', 'c', 'd'] as const
 const OPTION_LABELS = { a: 'A', b: 'B', c: 'C', d: 'D' }
 const OPTION_KEYS = { a: 'optionA', b: 'optionB', c: 'optionC', d: 'optionD' } as const
 
-export default function MCQCard({ question, onDelete }: MCQCardProps) {
+export default function MCQCard({ question, onDelete, questionNumber, totalQuestions }: MCQCardProps) {
   return (
     <div className="q-card">
+      {questionNumber && totalQuestions && (
+        <div className="question-counter">Question {questionNumber} of {totalQuestions}</div>
+      )}
       <div className="card-top">
         <span className="type-badge mcq-badge">MCQ</span>
         {question.subtopic && (
@@ -52,6 +57,17 @@ export default function MCQCard({ question, onDelete }: MCQCardProps) {
       )}
 
       <style jsx>{`
+        .question-counter {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-tertiary);
+          margin-bottom: 12px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid var(--border-light);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
         .q-card {
           background: var(--surface-elevated);
           border: 1px solid var(--border-light);

@@ -5,6 +5,8 @@ import { CQuestion } from '@/types'
 interface CQCardProps {
   question: CQuestion
   onDelete: (id: string) => void
+  questionNumber?: number
+  totalQuestions?: number
 }
 
 const PART_LABELS = [
@@ -14,9 +16,12 @@ const PART_LABELS = [
   { label: '(d) Higher ability', marks: 4 },
 ]
 
-export default function CQCard({ question, onDelete }: CQCardProps) {
+export default function CQCard({ question, onDelete, questionNumber, totalQuestions }: CQCardProps) {
   return (
     <div className="q-card">
+      {questionNumber && totalQuestions && (
+        <div className="question-counter">Question {questionNumber} of {totalQuestions}</div>
+      )}
       <div className="card-top">
         <span className="type-badge cq-badge">CQ</span>
         {question.subtopic && (
@@ -50,6 +55,17 @@ export default function CQCard({ question, onDelete }: CQCardProps) {
       </div>
 
       <style jsx>{`
+        .question-counter {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-tertiary);
+          margin-bottom: 12px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid var(--border-light);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
         .q-card {
           background: var(--surface-elevated);
           border: 1px solid var(--border-light);
