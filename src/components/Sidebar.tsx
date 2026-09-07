@@ -53,6 +53,16 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
     }
   }, [isMobile, isMobileOpen, setIsMobileOpen])
 
+  // Handle close button click
+  const handleCloseSidebar = React.useCallback(() => {
+    setIsMobileOpen(false)
+  }, [setIsMobileOpen])
+
+  // Handle backdrop click
+  const handleBackdropClick = React.useCallback(() => {
+    setIsMobileOpen(false)
+  }, [setIsMobileOpen])
+
   const filtered = topics.filter((t) =>
     t.name.toLowerCase().includes(search.toLowerCase())
   )
@@ -77,10 +87,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
       {isMobileOpen && (
         <div
           className="sidebar-backdrop"
-          onClick={(e) => {
-            e.preventDefault()
-            setIsMobileOpen(false)
-          }}
+          onClick={handleBackdropClick}
           role="button"
           tabIndex={-1}
         ></div>
@@ -102,11 +109,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
         <button
           type="button"
           className="sidebar-close-btn"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setIsMobileOpen(false)
-          }}
+          onClick={handleCloseSidebar}
           title="Close sidebar"
           aria-label="Close sidebar"
         >

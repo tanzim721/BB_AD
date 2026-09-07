@@ -94,71 +94,7 @@ export default function Header() {
               />
             </div>
 
-            <div className="header-actions">
-              <div className="notification-container">
-                <button
-                  className={`header-icon-btn ${notificationOpen ? 'active' : ''}`}
-                  title="Notifications"
-                  onClick={() => setNotificationOpen(!notificationOpen)}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                  </svg>
-                  <span className="badge">3</span>
-                </button>
-                {notificationOpen && (
-                  <div className="notification-dropdown">
-                    <div className="dropdown-header">Notifications</div>
-                    <div className="notification-item">
-                      <div className="notification-dot"></div>
-                      <div>New topic added: Algorithms</div>
-                    </div>
-                    <div className="notification-item">
-                      <div className="notification-dot"></div>
-                      <div>Quiz completed: Data Structures</div>
-                    </div>
-                    <div className="notification-item">
-                      <div className="notification-dot"></div>
-                      <div>5 new MCQs added to C Programming</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <button
-                className="header-icon-btn"
-                title="Help"
-                onClick={() => alert('Help: For guidance, visit our documentation or contact support.')}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
-                </svg>
-              </button>
-              <div className="settings-container">
-                <button
-                  className={`header-icon-btn ${settingsOpen ? 'active' : ''}`}
-                  title="Settings"
-                  onClick={() => setSettingsOpen(!settingsOpen)}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
-                  </svg>
-                </button>
-                {settingsOpen && (
-                  <div className="settings-dropdown">
-                    <div className="dropdown-header">Settings</div>
-                    <button className="dropdown-item">Theme: Light</button>
-                    <button className="dropdown-item">Sound: On</button>
-                    <button className="dropdown-item">Notifications: On</button>
-                    <div className="dropdown-divider"></div>
-                    <button className="dropdown-item">Privacy</button>
-                    <button className="dropdown-item">Account</button>
-                  </div>
-                )}
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
