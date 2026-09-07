@@ -75,7 +75,15 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
   return (
     <>
       {isMobileOpen && (
-        <div className="sidebar-backdrop" onClick={() => setIsMobileOpen(false)}></div>
+        <div
+          className="sidebar-backdrop"
+          onClick={(e) => {
+            e.preventDefault()
+            setIsMobileOpen(false)
+          }}
+          role="button"
+          tabIndex={-1}
+        ></div>
       )}
       <aside className={`sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
       <div className="sidebar-header">
@@ -94,7 +102,11 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
         <button
           type="button"
           className="sidebar-close-btn"
-          onClick={() => setIsMobileOpen(false)}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setIsMobileOpen(false)
+          }}
           title="Close sidebar"
           aria-label="Close sidebar"
         >
@@ -330,29 +342,31 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
         .sidebar-close-btn {
           display: none;
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
           border: none;
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.15);
           color: white;
           cursor: pointer;
           border-radius: 8px;
           flex-shrink: 0;
           align-items: center;
           justify-content: center;
-          transition: all 0.2s;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
           padding: 0;
-          z-index: 10;
+          z-index: 100;
           pointer-events: auto;
+          line-height: 1;
         }
 
         .sidebar-close-btn:hover {
-          background: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.25);
+          transform: rotate(90deg);
         }
 
         .sidebar-close-btn:active {
-          transform: scale(0.95);
+          transform: scale(0.9) rotate(90deg);
         }
 
         .view-toggle {
@@ -1031,6 +1045,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             background: rgba(0, 0, 0, 0.5);
             z-index: 40;
             animation: fadeIn 0.2s ease-out;
+            pointer-events: auto;
+            cursor: pointer;
           }
 
           @keyframes fadeIn {
