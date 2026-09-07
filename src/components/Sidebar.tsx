@@ -43,8 +43,15 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [expandedCategory, setExpandedCategory] = useState<string | null>('Core')
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
-  const { isMobileOpen, setIsMobileOpen } = useSidebar()
+  const { isMobileOpen, setIsMobileOpen, isMobile } = useSidebar()
   const pathname = usePathname()
+
+  // Close sidebar when resizing to desktop
+  React.useEffect(() => {
+    if (!isMobile && isMobileOpen) {
+      setIsMobileOpen(false)
+    }
+  }, [isMobile, isMobileOpen, setIsMobileOpen])
 
   const filtered = topics.filter((t) =>
     t.name.toLowerCase().includes(search.toLowerCase())
@@ -277,6 +284,11 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           overflow: hidden;
           color: white;
           position: relative;
+          transform: translateX(0) !important;
+        }
+
+        .sidebar-backdrop {
+          display: none !important;
         }
 
         .sidebar::before {

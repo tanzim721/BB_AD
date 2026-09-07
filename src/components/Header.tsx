@@ -340,7 +340,7 @@ export default function Header() {
         }
 
         .hamburger-btn {
-          display: none;
+          display: none !important;
           width: 38px;
           height: 38px;
           border: 1.5px solid #e5e7eb;
@@ -360,6 +360,12 @@ export default function Header() {
           background: #dbeafe;
           border-color: #0284c7;
           color: #0284c7;
+        }
+
+        @media (max-width: 640px) {
+          .hamburger-btn {
+            display: flex !important;
+          }
         }
 
         .search-bar {
