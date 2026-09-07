@@ -14,6 +14,12 @@ interface SidebarProps {
   counts?: TopicCounts
 }
 
+// Default icon for topics without specific icons
+const DEFAULT_ICON = {
+  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8 8 12 12 16"></polyline></svg>,
+  color: '#0ea5e9'
+}
+
 // Icon mapping for topics with colors
 const TOPIC_ICONS: Record<number, { icon: React.ReactElement; color: string }> = {
   1: { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>, color: '#0ea5e9' },
@@ -145,7 +151,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                 {filtered.map((topic) => {
                   const isActive = pathname === `/topics/${topic.id}`
                   const count = counts[topic.id]
-                  const iconData = TOPIC_ICONS[topic.id]
+                  const iconData = TOPIC_ICONS[topic.id] || DEFAULT_ICON
                   return (
                     <Link
                       key={topic.id}
