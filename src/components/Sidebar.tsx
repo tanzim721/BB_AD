@@ -91,6 +91,17 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             <div className="brand-subtitle">AD(ICT) Exam</div>
           </div>
         </div>
+        <button
+          className="sidebar-close-btn"
+          onClick={() => setIsMobileOpen(false)}
+          title="Close sidebar"
+          aria-label="Close sidebar"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
         <div className="view-toggle">
           <button
             className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
@@ -314,6 +325,30 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           align-items: center;
           justify-content: space-between;
           gap: 12px;
+        }
+
+        .sidebar-close-btn {
+          display: none;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          cursor: pointer;
+          border-radius: 8px;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s;
+          font-family: inherit;
+        }
+
+        .sidebar-close-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-close-btn:active {
+          transform: scale(0.95);
         }
 
         .sidebar-branding {
@@ -953,6 +988,23 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
           .sidebar.mobile-open {
             transform: translateX(0);
+          }
+
+          .sidebar-close-btn {
+            display: flex !important;
+          }
+
+          .sidebar-header {
+            padding: 12px;
+          }
+
+          .sidebar-branding {
+            flex: 1;
+            min-width: 0;
+          }
+
+          .brand-text {
+            display: none;
           }
 
           .sidebar-backdrop {
