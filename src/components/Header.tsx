@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
+import { useSidebar } from '@/lib/SidebarContext'
 
 export default function Header() {
   const pathname = usePathname()
@@ -10,6 +11,7 @@ export default function Header() {
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const { toggleMobile } = useSidebar()
   const headerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -66,6 +68,19 @@ export default function Header() {
           </div>
 
           <div className="header-right">
+            <button
+              className="hamburger-btn"
+              onClick={toggleMobile}
+              title="Toggle sidebar"
+              aria-label="Toggle navigation"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+
             <div className={`search-bar ${searchFocused ? 'focused' : ''}`}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -322,6 +337,29 @@ export default function Header() {
           align-items: center;
           gap: 12px;
           min-width: 0;
+        }
+
+        .hamburger-btn {
+          display: none;
+          width: 38px;
+          height: 38px;
+          border: 1.5px solid #e5e7eb;
+          background: white;
+          color: #374151;
+          border-radius: 12px;
+          cursor: pointer;
+          flex-direction: column;
+          gap: 4px;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s;
+          font-family: inherit;
+        }
+
+        .hamburger-btn:hover {
+          background: #dbeafe;
+          border-color: #0284c7;
+          color: #0284c7;
         }
 
         .search-bar {
@@ -692,6 +730,18 @@ export default function Header() {
 
           .logo-title {
             font-size: 12px;
+          }
+
+          .header-right {
+            gap: 6px;
+          }
+
+          .hamburger-btn {
+            display: flex;
+          }
+
+          .search-bar {
+            display: none;
           }
 
           .header-actions {

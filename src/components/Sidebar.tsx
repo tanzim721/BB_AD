@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTopics } from '@/lib/useTopics'
+import { useSidebar } from '@/lib/SidebarContext'
 
 interface TopicCounts {
   [topicId: number]: { mcq: number; cq: number }
@@ -36,6 +37,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [expandedCategory, setExpandedCategory] = useState<string | null>('Core')
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
+  const { isMobileOpen, setIsMobileOpen } = useSidebar()
   const pathname = usePathname()
 
   const filtered = topics.filter((t) =>
@@ -58,7 +60,11 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
   }, 0)
 
   return (
-    <aside className="sidebar">
+    <>
+      {isMobileOpen && (
+        <div className="sidebar-backdrop" onClick={() => setIsMobileOpen(false)}></div>
+      )}
+      <aside className={`sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
       <div className="sidebar-header">
         <div className="sidebar-branding">
           <div className="brand-icon">
@@ -910,7 +916,45 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
         @media (max-width: 640px) {
           .sidebar {
-            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 320px;
+            height: 100vh;
+            max-height: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: none;
+            z-index: 50;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            overflow-y: auto;
+            overflow-x: hidden;
+          }
+
+          .sidebar.mobile-open {
+            transform: translateX(0);
+          }
+
+          .sidebar-backdrop {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            animation: fadeIn 0.2s ease-out;
+          }
+
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
           }
 
           .sidebar-header {
@@ -1004,6 +1048,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           }
         }
       `}</style>
-    </aside>
+      </aside>
+    </>
   )
 }
