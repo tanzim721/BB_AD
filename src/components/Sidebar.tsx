@@ -92,6 +92,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           </div>
         </div>
         <button
+          type="button"
           className="sidebar-close-btn"
           onClick={() => setIsMobileOpen(false)}
           title="Close sidebar"
@@ -341,6 +342,9 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           justify-content: center;
           transition: all 0.2s;
           font-family: inherit;
+          padding: 0;
+          z-index: 10;
+          pointer-events: auto;
         }
 
         .sidebar-close-btn:hover {
@@ -349,6 +353,10 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
         .sidebar-close-btn:active {
           transform: scale(0.95);
+        }
+
+        .view-toggle {
+          display: flex;
         }
 
         .sidebar-branding {
@@ -992,10 +1000,13 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
           .sidebar-close-btn {
             display: flex !important;
+            z-index: 100;
+            pointer-events: auto;
           }
 
           .sidebar-header {
             padding: 12px;
+            gap: 8px;
           }
 
           .sidebar-branding {
@@ -1005,6 +1016,10 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
           .brand-text {
             display: none;
+          }
+
+          .view-toggle {
+            display: none !important;
           }
 
           .sidebar-backdrop {
