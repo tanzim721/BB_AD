@@ -1,15 +1,31 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Header() {
   const pathname = usePathname()
   const isHome = pathname === '/'
   const [searchFocused, setSearchFocused] = useState(false)
+  const [notificationOpen, setNotificationOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setNotificationOpen(false)
+        setSettingsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
-    <header className="app-header">
+    <header className="app-header" ref={headerRef}>
       <div className="header-top">
         <div className="header-container">
           <div className="header-left">
@@ -64,25 +80,69 @@ export default function Header() {
             </div>
 
             <div className="header-actions">
-              <button className="header-icon-btn" title="Notifications">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                <span className="badge">3</span>
-              </button>
-              <button className="header-icon-btn" title="Help">
+              <div className="notification-container">
+                <button
+                  className={`header-icon-btn ${notificationOpen ? 'active' : ''}`}
+                  title="Notifications"
+                  onClick={() => setNotificationOpen(!notificationOpen)}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                  </svg>
+                  <span className="badge">3</span>
+                </button>
+                {notificationOpen && (
+                  <div className="notification-dropdown">
+                    <div className="dropdown-header">Notifications</div>
+                    <div className="notification-item">
+                      <div className="notification-dot"></div>
+                      <div>New topic added: Algorithms</div>
+                    </div>
+                    <div className="notification-item">
+                      <div className="notification-dot"></div>
+                      <div>Quiz completed: Data Structures</div>
+                    </div>
+                    <div className="notification-item">
+                      <div className="notification-dot"></div>
+                      <div>5 new MCQs added to C Programming</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button
+                className="header-icon-btn"
+                title="Help"
+                onClick={() => alert('Help: For guidance, visit our documentation or contact support.')}
+              >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 16v-4M12 8h.01" />
                 </svg>
               </button>
-              <button className="header-icon-btn" title="Settings">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="3" />
-                  <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
-                </svg>
-              </button>
+              <div className="settings-container">
+                <button
+                  className={`header-icon-btn ${settingsOpen ? 'active' : ''}`}
+                  title="Settings"
+                  onClick={() => setSettingsOpen(!settingsOpen)}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
+                  </svg>
+                </button>
+                {settingsOpen && (
+                  <div className="settings-dropdown">
+                    <div className="dropdown-header">Settings</div>
+                    <button className="dropdown-item">Theme: Light</button>
+                    <button className="dropdown-item">Sound: On</button>
+                    <button className="dropdown-item">Notifications: On</button>
+                    <div className="dropdown-divider"></div>
+                    <button className="dropdown-item">Privacy</button>
+                    <button className="dropdown-item">Account</button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -181,17 +241,20 @@ export default function Header() {
         }
 
         .logo-title {
-          font-size: 14px;
-          font-weight: 800;
-          color: var(--text-primary);
+          font-size: 15px;
+          font-weight: 900;
+          background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           letter-spacing: -0.02em;
         }
 
         .logo-subtitle {
-          font-size: 11px;
-          color: var(--text-tertiary);
-          font-weight: 600;
-          letter-spacing: 0.05em;
+          font-size: 12px;
+          color: var(--accent-primary);
+          font-weight: 700;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
         }
 
@@ -207,9 +270,9 @@ export default function Header() {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 13px;
-          color: var(--text-secondary);
-          font-weight: 600;
+          font-size: 14px;
+          color: var(--text-primary);
+          font-weight: 700;
         }
 
         .breadcrumb a {
@@ -218,9 +281,9 @@ export default function Header() {
           gap: 6px;
           color: var(--accent-primary);
           text-decoration: none;
-          font-weight: 600;
+          font-weight: 700;
           transition: all 0.2s;
-          padding: 4px 8px;
+          padding: 6px 10px;
           border-radius: 6px;
         }
 
@@ -230,26 +293,27 @@ export default function Header() {
         }
 
         .separator {
-          color: var(--text-tertiary);
-          font-weight: 300;
+          color: var(--text-secondary);
+          font-weight: 400;
         }
 
         .current {
-          color: var(--text-secondary);
-          font-weight: 700;
+          color: var(--accent-primary);
+          font-weight: 800;
           background: var(--accent-light);
-          padding: 4px 10px;
+          padding: 6px 12px;
           border-radius: 6px;
+          letter-spacing: -0.01em;
         }
 
         .header-title {
-          font-size: 16px;
-          font-weight: 800;
+          font-size: 18px;
+          font-weight: 900;
           color: var(--text-primary);
           letter-spacing: -0.02em;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 10px;
         }
 
         .title-icon {
@@ -299,7 +363,8 @@ export default function Header() {
         }
 
         .search-bar input::placeholder {
-          color: var(--text-tertiary);
+          color: var(--text-secondary);
+          opacity: 0.7;
         }
 
         .header-actions {
@@ -315,7 +380,7 @@ export default function Header() {
           border-radius: var(--radius-lg);
           border: 1.5px solid var(--border-light);
           background: white;
-          color: var(--text-secondary);
+          color: var(--text-primary);
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -323,6 +388,7 @@ export default function Header() {
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          font-weight: 600;
         }
 
         .header-icon-btn:hover {
@@ -357,52 +423,178 @@ export default function Header() {
         .header-stats {
           display: flex;
           align-items: center;
-          gap: 0;
-          padding: 12px 24px;
-          background: linear-gradient(90deg, rgba(14, 165, 233, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+          justify-content: space-around;
+          gap: 24px;
+          padding: 20px 24px;
+          background: linear-gradient(90deg, rgba(14, 165, 233, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+          border-top: 2px solid rgba(14, 165, 233, 0.1);
         }
 
         .stat-item {
           display: flex;
+          flex-direction: column;
           align-items: center;
           gap: 8px;
-          padding: 6px 16px;
+          padding: 12px 20px;
+          flex: 1;
+          text-align: center;
+          position: relative;
+          transition: all 0.2s ease;
+        }
+
+        .stat-item:hover {
+          transform: translateY(-2px);
         }
 
         .stat-label {
-          font-size: 11px;
-          font-weight: 700;
-          color: var(--text-tertiary);
+          font-size: 12px;
+          font-weight: 800;
+          color: var(--text-secondary);
           text-transform: uppercase;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.08em;
         }
 
         .stat-value {
-          font-size: 16px;
-          font-weight: 800;
-          color: var(--accent-primary);
+          font-size: 22px;
+          font-weight: 900;
+          background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           font-variant-numeric: tabular-nums;
+          letter-spacing: -0.02em;
         }
 
         .stat-divider {
           width: 1px;
-          height: 24px;
-          background: var(--border-light);
+          height: 40px;
+          background: rgba(14, 165, 233, 0.2);
+          display: none;
         }
 
         .progress-bar {
-          width: 80px;
-          height: 6px;
-          background: var(--border-light);
-          border-radius: 3px;
+          width: 100px;
+          height: 8px;
+          background: rgba(14, 165, 233, 0.15);
+          border-radius: 4px;
           overflow: hidden;
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .progress-fill {
           height: 100%;
           background: linear-gradient(90deg, #0ea5e9, #06b6d4);
-          border-radius: 3px;
+          border-radius: 4px;
           transition: width 0.3s ease-out;
+          box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+        }
+
+        .notification-container,
+        .settings-container {
+          position: relative;
+        }
+
+        .notification-dropdown,
+        .settings-dropdown {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          margin-top: 8px;
+          background: white;
+          border: 1px solid var(--border-light);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+          z-index: 100;
+          min-width: 280px;
+          animation: slideDown 0.2s ease-out;
+        }
+
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .dropdown-header {
+          padding: 12px 16px;
+          font-weight: 700;
+          font-size: 13px;
+          color: var(--text-primary);
+          border-bottom: 1px solid var(--border-light);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .notification-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 12px 16px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          cursor: pointer;
+          transition: background 0.2s;
+          font-size: 13px;
+          color: var(--text-secondary);
+          line-height: 1.5;
+        }
+
+        .notification-item:last-child {
+          border-bottom: none;
+        }
+
+        .notification-item:hover {
+          background: rgba(14, 165, 233, 0.05);
+        }
+
+        .notification-dot {
+          width: 8px;
+          height: 8px;
+          background: #ef4444;
+          border-radius: 50%;
+          flex-shrink: 0;
+          margin-top: 4px;
+        }
+
+        .dropdown-item {
+          display: block;
+          width: 100%;
+          text-align: left;
+          padding: 12px 16px;
+          border: none;
+          background: none;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          cursor: pointer;
+          font-size: 13px;
+          color: var(--text-secondary);
+          transition: all 0.2s;
+          font-family: inherit;
+        }
+
+        .dropdown-item:last-child {
+          border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+          background: rgba(14, 165, 233, 0.05);
+          color: var(--accent-primary);
+          padding-left: 20px;
+        }
+
+        .dropdown-divider {
+          height: 1px;
+          background: var(--border-light);
+          margin: 4px 0;
+        }
+
+        .header-icon-btn.active {
+          background: var(--accent-light);
+          border-color: var(--accent-primary);
+          color: var(--accent-primary);
         }
 
         @media (max-width: 1024px) {
@@ -411,11 +603,16 @@ export default function Header() {
           }
 
           .header-stats {
-            padding: 10px 16px;
+            padding: 16px;
+            gap: 16px;
           }
 
           .stat-item {
-            padding: 4px 12px;
+            padding: 10px 16px;
+          }
+
+          .stat-value {
+            font-size: 18px;
           }
         }
 
@@ -452,14 +649,15 @@ export default function Header() {
           }
 
           .header-stats {
-            padding: 8px 16px;
-            font-size: 12px;
-            gap: 8px;
+            padding: 12px 16px;
+            gap: 12px;
             flex-wrap: wrap;
+            justify-content: space-between;
           }
 
           .stat-item {
-            padding: 4px 8px;
+            padding: 8px 12px;
+            flex: 0 1 auto;
           }
 
           .stat-divider {
@@ -467,7 +665,7 @@ export default function Header() {
           }
 
           .stat-label {
-            font-size: 10px;
+            font-size: 9px;
           }
 
           .stat-value {
@@ -475,7 +673,12 @@ export default function Header() {
           }
 
           .progress-bar {
-            width: 60px;
+            width: 70px;
+          }
+
+          .notification-dropdown,
+          .settings-dropdown {
+            right: -50px;
           }
         }
 
@@ -516,15 +719,31 @@ export default function Header() {
           }
 
           .header-stats {
-            padding: 8px 12px;
+            padding: 10px 12px;
+            gap: 8px;
           }
 
           .stat-item {
-            padding: 2px 6px;
+            padding: 6px 8px;
           }
 
           .stat-value {
-            font-size: 13px;
+            font-size: 12px;
+          }
+
+          .stat-label {
+            font-size: 8px;
+          }
+
+          .progress-bar {
+            width: 50px;
+            height: 6px;
+          }
+
+          .notification-dropdown,
+          .settings-dropdown {
+            min-width: 250px;
+            right: -80px;
           }
         }
       `}</style>

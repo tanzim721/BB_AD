@@ -134,31 +134,33 @@ export default function MCQCard({ question, onDelete }: MCQCardProps) {
         }
 
         .q-text {
-          font-size: 14px;
-          font-weight: 600;
+          font-size: 16px;
+          font-weight: 700;
           color: var(--text-primary);
-          line-height: 1.6;
-          margin-bottom: 14px;
+          line-height: 1.7;
+          margin-bottom: 18px;
+          letter-spacing: -0.01em;
         }
 
         .options-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          margin-bottom: 12px;
+          gap: 10px;
+          margin-bottom: 16px;
         }
 
         .option {
           display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 12px;
+          align-items: flex-start;
+          gap: 10px;
+          padding: 12px 14px;
           border-radius: var(--radius-md);
-          border: 1px solid var(--border-light);
-          font-size: 13px;
+          border: 1.5px solid var(--border-light);
+          font-size: 14px;
           color: var(--text-secondary);
           background: var(--surface-overlay);
           transition: all 0.2s;
+          line-height: 1.6;
         }
 
         .option.correct {
@@ -168,19 +170,27 @@ export default function MCQCard({ question, onDelete }: MCQCardProps) {
         }
 
         .opt-label {
-          font-size: 11px;
-          font-weight: 700;
-          min-width: 16px;
-          color: var(--text-tertiary);
+          font-size: 12px;
+          font-weight: 800;
+          min-width: 20px;
+          color: var(--text-secondary);
           font-variant-numeric: tabular-nums;
+          background: rgba(0, 0, 0, 0.05);
+          padding: 2px 6px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .option.correct .opt-label {
-          color: var(--accent-primary);
+          color: white;
+          background: var(--accent-primary);
         }
 
         .opt-text {
           flex: 1;
+          font-weight: 500;
         }
 
         .check-icon {
@@ -192,20 +202,23 @@ export default function MCQCard({ question, onDelete }: MCQCardProps) {
         .explanation {
           display: flex;
           align-items: flex-start;
-          gap: 8px;
-          font-size: 12px;
+          gap: 10px;
+          font-size: 13px;
           color: var(--text-secondary);
           background: var(--accent-secondary-light);
-          border: 1px solid var(--accent-secondary-color);
+          border: 1.5px solid var(--accent-secondary-color);
           border-radius: var(--radius-md);
-          padding: 10px 12px;
-          line-height: 1.6;
+          padding: 12px 14px;
+          line-height: 1.7;
+          font-weight: 500;
         }
 
         .explanation svg {
-          margin-top: 2px;
+          margin-top: 3px;
           flex-shrink: 0;
           color: var(--accent-secondary-color);
+          width: 14px;
+          height: 14px;
         }
       `}</style>
     </div>

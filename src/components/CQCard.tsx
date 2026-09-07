@@ -86,9 +86,9 @@ export default function CQCard({ question, onDelete }: CQCardProps) {
         }
 
         .type-badge {
-          font-size: 11px;
-          font-weight: 700;
-          padding: 3px 8px;
+          font-size: 12px;
+          font-weight: 800;
+          padding: 4px 10px;
           border-radius: var(--radius-sm);
           letter-spacing: 0.05em;
         }
@@ -99,17 +99,17 @@ export default function CQCard({ question, onDelete }: CQCardProps) {
         }
 
         .subtopic-tag {
-          font-size: 12px;
+          font-size: 13px;
           color: var(--text-secondary);
           background: var(--surface-overlay);
-          border: 1px solid var(--border-light);
-          padding: 3px 10px;
+          border: 1.5px solid var(--border-light);
+          padding: 4px 11px;
           border-radius: var(--radius-sm);
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           max-width: 240px;
-          font-weight: 500;
+          font-weight: 600;
         }
 
         .del-btn {
@@ -140,19 +140,19 @@ export default function CQCard({ question, onDelete }: CQCardProps) {
         }
 
         .stem-label {
-          font-size: 11px;
-          font-weight: 700;
-          color: var(--text-tertiary);
-          margin-bottom: 6px;
-          letter-spacing: 0.05em;
+          font-size: 12px;
+          font-weight: 800;
+          color: var(--text-secondary);
+          margin-bottom: 8px;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
 
         .stem-text {
-          font-size: 14px;
+          font-size: 15px;
           color: var(--text-primary);
-          line-height: 1.6;
-          font-weight: 500;
+          line-height: 1.7;
+          font-weight: 600;
         }
 
         .parts {
@@ -181,41 +181,44 @@ export default function CQCard({ question, onDelete }: CQCardProps) {
         }
 
         .part-label {
-          font-size: 12px;
-          font-weight: 700;
+          font-size: 13px;
+          font-weight: 800;
           color: var(--accent-primary);
+          letter-spacing: -0.01em;
         }
 
         .marks-badge {
-          font-size: 11px;
-          font-weight: 600;
+          font-size: 12px;
+          font-weight: 700;
           background: var(--accent-light);
           color: var(--accent-primary);
-          padding: 2px 8px;
+          padding: 3px 9px;
           border-radius: var(--radius-sm);
           margin-left: auto;
           font-variant-numeric: tabular-nums;
         }
 
         .part-question {
-          font-size: 13px;
+          font-size: 14px;
           color: var(--text-secondary);
-          line-height: 1.6;
-          margin-bottom: 4px;
+          line-height: 1.7;
+          margin-bottom: 6px;
+          font-weight: 500;
         }
 
         .part-answer {
           display: flex;
           align-items: flex-start;
-          gap: 8px;
-          margin-top: 8px;
-          font-size: 13px;
+          gap: 10px;
+          margin-top: 10px;
+          font-size: 14px;
           color: var(--success);
-          background: rgba(16, 185, 129, 0.08);
-          border: 1px solid rgba(16, 185, 129, 0.2);
+          background: rgba(16, 185, 129, 0.1);
+          border: 1.5px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-sm);
-          padding: 8px 10px;
-          line-height: 1.5;
+          padding: 10px 12px;
+          line-height: 1.6;
+          font-weight: 500;
         }
 
         .part-answer svg {

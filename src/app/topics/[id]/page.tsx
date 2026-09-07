@@ -243,16 +243,19 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         }
 
         .topic-title {
-          font-size: 28px;
-          font-weight: 800;
+          font-size: 32px;
+          font-weight: 900;
           color: var(--text-primary);
           letter-spacing: -0.02em;
         }
 
         .sub-count {
-          font-size: 13px;
-          color: var(--text-tertiary);
-          font-weight: 500;
+          font-size: 14px;
+          color: var(--text-secondary);
+          font-weight: 600;
+          background: var(--accent-light);
+          padding: 4px 10px;
+          border-radius: 6px;
         }
 
         .header-actions {
@@ -267,14 +270,15 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
           align-items: center;
           justify-content: center;
           gap: 8px;
-          padding: 10px 16px;
+          padding: 11px 18px;
           border-radius: var(--radius-lg);
           border: none;
-          font-size: 13px;
-          font-weight: 600;
+          font-size: 14px;
+          font-weight: 700;
           cursor: pointer;
           font-family: inherit;
           transition: all 0.2s;
+          letter-spacing: -0.01em;
         }
 
         .btn:hover {
@@ -324,9 +328,9 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         }
 
         .tab {
-          padding: 12px 16px;
-          font-size: 13px;
-          font-weight: 600;
+          padding: 14px 18px;
+          font-size: 14px;
+          font-weight: 700;
           color: var(--text-secondary);
           border: none;
           background: none;
@@ -335,6 +339,7 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
           margin-bottom: -1px;
           font-family: inherit;
           transition: all 0.2s;
+          letter-spacing: -0.01em;
         }
 
         .tab:hover {
@@ -385,28 +390,31 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         }
 
         .stat-val {
-          font-size: 32px;
-          font-weight: 800;
-          color: var(--accent-primary);
+          font-size: 36px;
+          font-weight: 900;
+          background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           letter-spacing: -0.02em;
         }
 
         .stat-lbl {
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--text-tertiary);
-          margin-top: 8px;
+          font-size: 13px;
+          font-weight: 700;
+          color: var(--text-secondary);
+          margin-top: 10px;
           text-transform: uppercase;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.08em;
         }
 
         .section-label {
-          font-size: 12px;
-          font-weight: 700;
-          color: var(--text-secondary);
-          margin-bottom: 14px;
+          font-size: 13px;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin-bottom: 16px;
           text-transform: uppercase;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.08em;
         }
 
         .chip-grid {
@@ -417,16 +425,17 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         }
 
         .chip {
-          padding: 8px 14px;
+          padding: 10px 16px;
           border-radius: 20px;
           background: var(--surface-overlay);
-          border: 1px solid var(--border-light);
-          font-size: 13px;
-          font-weight: 600;
+          border: 1.5px solid var(--border-light);
+          font-size: 14px;
+          font-weight: 700;
           color: var(--text-secondary);
           cursor: pointer;
           font-family: inherit;
           transition: all 0.2s;
+          letter-spacing: -0.01em;
         }
 
         .chip:hover {
@@ -440,9 +449,11 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         }
 
         .hint {
-          font-size: 12px;
-          color: var(--text-tertiary);
-          margin-top: 12px;
+          font-size: 13px;
+          color: var(--text-secondary);
+          margin-top: 14px;
+          line-height: 1.6;
+          font-weight: 500;
         }
 
         .question-list {
@@ -465,10 +476,11 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
         }
 
         .empty p {
-          font-size: 14px;
+          font-size: 15px;
           color: var(--text-secondary);
-          max-width: 280px;
-          line-height: 1.6;
+          max-width: 320px;
+          line-height: 1.7;
+          font-weight: 500;
         }
       `}</style>
     </div>
