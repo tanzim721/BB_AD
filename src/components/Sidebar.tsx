@@ -197,8 +197,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                       </span>
                       <span className="topic-name">{topic.name}</span>
                       <div className="topic-pills">
-                        {count?.mcq ? <span className="pill pill-mcq">{count.mcq}</span> : null}
-                        {count?.cq ? <span className="pill pill-cq">{count.cq}</span> : null}
+                        <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
+                        <span className="pill pill-cq">C: {count?.cq || 0}</span>
                       </div>
                     </Link>
                   )
@@ -256,8 +256,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                               <>
                                 <span className="topic-name">{topic.name}</span>
                                 <div className="topic-pills">
-                                  {count?.mcq ? <span className="pill pill-mcq">{count.mcq}</span> : null}
-                                  {count?.cq ? <span className="pill pill-cq">{count.cq}</span> : null}
+                                  <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
+                                  <span className="pill pill-cq">C: {count?.cq || 0}</span>
                                 </div>
                               </>
                             )}
@@ -265,8 +265,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                               <div className="topic-card-content">
                                 <div className="topic-title">{topic.name}</div>
                                 <div className="topic-meta">
-                                  {count?.mcq ? <span className="meta-item mcq">M:{count.mcq}</span> : null}
-                                  {count?.cq ? <span className="meta-item cq">C:{count.cq}</span> : null}
+                                  <span className="meta-item mcq">M: {count?.mcq || 0}</span>
+                                  <span className="meta-item cq">C: {count?.cq || 0}</span>
                                 </div>
                               </div>
                             )}
