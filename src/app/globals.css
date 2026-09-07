@@ -129,6 +129,7 @@ html, body {
   overflow: hidden;
   background: var(--bg-primary);
   gap: var(--spacing-md);
+  min-height: 0;
 }
 
 .main-content {
@@ -141,13 +142,50 @@ html, body {
 
 /* Responsive main content */
 @media (max-width: 768px) {
-  .app-shell {
+  .app-layout {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
     flex-direction: column;
+  }
+
+  .app-shell {
+    flex-direction: row;
     gap: 0;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .main-content {
     padding: var(--spacing-md);
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-layout {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app-shell {
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+    min-height: 0;
   }
 }
 

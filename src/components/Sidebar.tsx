@@ -912,9 +912,11 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           .sidebar {
             width: 100%;
             height: auto;
-            max-height: 400px;
+            max-height: 200px;
             border-right: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            flex-shrink: 0;
           }
 
           .sidebar-header {
