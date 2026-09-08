@@ -85,7 +85,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             </svg>
           </div>
           <div className="brand-text">
-            <div className="brand-title">BD  </div>
+            <div className="brand-title">BB  </div>
             <div className="brand-subtitle">AD(ICT) Exam</div>
           </div>
         </div>
@@ -209,19 +209,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="footer-stats">
-          <div className="stat">
-            <div className="stat-value">{topics.length}</div>
-            <div className="stat-label">Topics</div>
-          </div>
-          <div className="stat">
-            <div className="stat-value">{Object.values(counts).reduce((sum, c) => sum + (c.mcq || 0), 0)}</div>
-            <div className="stat-label">MCQs</div>
-          </div>
-          <div className="stat">
-            <div className="stat-value">{Object.values(counts).reduce((sum, c) => sum + (c.cq || 0), 0)}</div>
-            <div className="stat-label">CQs</div>
-          </div>
+        <div className="footer-credit">
+          <p>Developed by <span className="developer-name">Tanzim</span></p>
         </div>
       </div>
 
@@ -279,6 +268,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           align-items: center;
           justify-content: space-between;
           gap: 12px;
+          flex-shrink: 0;
         }
 
         .sidebar-close-btn {
@@ -356,6 +346,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           background: rgba(255, 255, 255, 0.03);
           position: relative;
           z-index: 1;
+          flex-shrink: 0;
         }
 
         .search-wrap {
@@ -807,41 +798,24 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           backdrop-filter: blur(10px);
           position: relative;
           z-index: 1;
+          flex-shrink: 0;
+          width: 100%;
         }
 
-        .footer-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
-        }
-
-        .stat {
+        .footer-credit {
           text-align: center;
-          padding: 10px;
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: var(--radius-md);
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .stat:hover {
-          background: rgba(96, 165, 250, 0.15);
-          border-color: rgba(96, 165, 250, 0.3);
+        .footer-credit p {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.6);
+          font-weight: 500;
+          margin: 0;
         }
 
-        .stat-value {
-          font-size: 16px;
-          font-weight: 800;
-          color: white;
-          margin-bottom: 2px;
-        }
-
-        .stat-label {
-          font-size: 10px;
-          color: rgba(255, 255, 255, 0.7);
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+        .developer-name {
+          color: rgba(96, 165, 250, 0.9);
+          font-weight: 700;
         }
 
         /* Responsive Design */
@@ -884,20 +858,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             padding: 12px;
           }
 
-          .footer-stats {
-            gap: 8px;
-          }
-
-          .stat {
-            padding: 8px;
-          }
-
-          .stat-value {
-            font-size: 14px;
-          }
-
-          .stat-label {
-            font-size: 9px;
+          .footer-credit p {
+            font-size: 10px;
           }
         }
 
@@ -1034,22 +996,8 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
           }
 
-          .footer-stats {
-            gap: 8px;
-          }
-
-          .stat {
-            padding: 8px;
-            font-size: 11px;
-          }
-
-          .stat-value {
-            font-size: 16px;
-            margin-bottom: 2px;
-          }
-
-          .stat-label {
-            font-size: 9px;
+          .footer-credit p {
+            font-size: 10px;
           }
 
           .topic-nav {
