@@ -186,6 +186,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                   const isActive = pathname === `/topics/${topic.id}`
                   const count = counts[topic.id]
                   const iconData = TOPIC_ICONS[topic.id] || DEFAULT_ICON
+                  const totalCount = (count?.mcq || 0) + (count?.cq || 0)
                   return (
                     <Link
                       key={topic.id}
@@ -196,10 +197,12 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                         {iconData.icon}
                       </span>
                       <span className="topic-name">{topic.name}</span>
-                      <div className="topic-pills">
-                        <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
-                        <span className="pill pill-cq">C: {count?.cq || 0}</span>
-                      </div>
+                      {totalCount > 0 && (
+                        <div className="topic-pills">
+                          <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
+                          <span className="pill pill-cq">C: {count?.cq || 0}</span>
+                        </div>
+                      )}
                     </Link>
                   )
                 })}
@@ -243,6 +246,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                         const isActive = pathname === `/topics/${topic.id}`
                         const count = counts[topic.id]
                         const iconData = TOPIC_ICONS[topic.id]
+                        const totalCount = (count?.mcq || 0) + (count?.cq || 0)
                         return (
                           <Link
                             key={topic.id}
@@ -255,19 +259,23 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                             {viewMode === 'list' && (
                               <>
                                 <span className="topic-name">{topic.name}</span>
-                                <div className="topic-pills">
-                                  <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
-                                  <span className="pill pill-cq">C: {count?.cq || 0}</span>
-                                </div>
+                                {totalCount > 0 && (
+                                  <div className="topic-pills">
+                                    <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
+                                    <span className="pill pill-cq">C: {count?.cq || 0}</span>
+                                  </div>
+                                )}
                               </>
                             )}
                             {viewMode === 'grid' && (
                               <div className="topic-card-content">
                                 <div className="topic-title">{topic.name}</div>
-                                <div className="topic-meta">
-                                  <span className="meta-item mcq">M: {count?.mcq || 0}</span>
-                                  <span className="meta-item cq">C: {count?.cq || 0}</span>
-                                </div>
+                                {totalCount > 0 && (
+                                  <div className="topic-meta">
+                                    <span className="meta-item mcq">M: {count?.mcq || 0}</span>
+                                    <span className="meta-item cq">C: {count?.cq || 0}</span>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </Link>
