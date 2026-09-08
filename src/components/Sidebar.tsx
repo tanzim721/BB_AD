@@ -41,8 +41,6 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
   const { topics, loading } = useTopics()
   const [search, setSearch] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
-  const [expandedCategory, setExpandedCategory] = useState<string | null>('Core')
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
   const { isMobileOpen, setIsMobileOpen, isMobile } = useSidebar()
   const pathname = usePathname()
 
@@ -66,21 +64,6 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
   const filtered = topics.filter((t) =>
     t.name.toLowerCase().includes(search.toLowerCase())
   )
-
-  const topicsByCategory = [
-    { name: 'Core', ids: [1, 2, 3, 4, 5, 6], icon: '📚' },
-    { name: 'Advanced', ids: [7, 8, 9, 10, 11, 12, 13], icon: '🚀' },
-  ]
-
-  const coreCount = topics.filter(t => [1, 2, 3, 4, 5, 6].includes(t.id)).reduce((sum, t) => {
-    const c = counts[t.id]
-    return sum + (c?.mcq || 0) + (c?.cq || 0)
-  }, 0)
-
-  const advancedCount = topics.filter(t => [7, 8, 9, 10, 11, 12, 13].includes(t.id)).reduce((sum, t) => {
-    const c = counts[t.id]
-    return sum + (c?.mcq || 0) + (c?.cq || 0)
-  }, 0)
 
   return (
     <>
@@ -118,34 +101,6 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <div className="view-toggle">
-          <button
-            className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-            onClick={() => setViewMode('list')}
-            title="List view"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="8" y1="6" x2="21" y2="6"></line>
-              <line x1="8" y1="12" x2="21" y2="12"></line>
-              <line x1="8" y1="18" x2="21" y2="18"></line>
-              <line x1="3" y1="6" x2="3.01" y2="6"></line>
-              <line x1="3" y1="12" x2="3.01" y2="12"></line>
-              <line x1="3" y1="18" x2="3.01" y2="18"></line>
-            </svg>
-          </button>
-          <button
-            className={`toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
-            onClick={() => setViewMode('grid')}
-            title="Grid view"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-          </button>
-        </div>
       </div>
 
       <div className="sidebar-search">
@@ -191,18 +146,20 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
                     <Link
                       key={topic.id}
                       href={`/topics/${topic.id}`}
-                      className={`topic-link ${isActive ? 'active' : ''}`}
+                      className={`topic-link grid ${isActive ? 'active' : ''}`}
                     >
                       <span className="topic-icon" style={{ '--icon-color': iconData.color } as React.CSSProperties}>
                         {iconData.icon}
                       </span>
-                      <span className="topic-name">{topic.name}</span>
-                      {totalCount > 0 && (
-                        <div className="topic-pills">
-                          <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
-                          <span className="pill pill-cq">C: {count?.cq || 0}</span>
-                        </div>
-                      )}
+                      <div className="topic-card-content">
+                        <div className="topic-title">{topic.name}</div>
+                        {totalCount > 0 && (
+                          <div className="topic-meta">
+                            <span className="meta-item mcq">M: {count?.mcq || 0}</span>
+                            <span className="meta-item cq">C: {count?.cq || 0}</span>
+                          </div>
+                        )}
+                      </div>
                     </Link>
                   )
                 })}
@@ -219,74 +176,35 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             )}
           </>
         ) : (
-          // Normal categorized view
-          <>
-            {topicsByCategory.map((category) => {
-              const categoryTopics = topics.filter((t) => category.ids.includes(t.id))
-              const isExpanded = expandedCategory === category.name
-              const catCount = category.name === 'Core' ? coreCount : advancedCount
+          // Grid view - all topics without categories
+          <div className="topic-list grid">
+            {topics.map((topic) => {
+              const isActive = pathname === `/topics/${topic.id}`
+              const count = counts[topic.id]
+              const iconData = TOPIC_ICONS[topic.id] || DEFAULT_ICON
+              const totalCount = (count?.mcq || 0) + (count?.cq || 0)
               return (
-                <div key={category.name} className="topic-category">
-                  <button
-                    className="category-header"
-                    onClick={() => setExpandedCategory(isExpanded ? null : category.name)}
-                  >
-                    <span className="category-icon">{category.icon}</span>
-                    <span className="category-name">{category.name}</span>
-                    <span className="category-count">{categoryTopics.length}</span>
-                    <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
-                    </span>
-                  </button>
-                  {isExpanded && (
-                    <div className={`category-items ${viewMode}`}>
-                      {categoryTopics.map((topic) => {
-                        const isActive = pathname === `/topics/${topic.id}`
-                        const count = counts[topic.id]
-                        const iconData = TOPIC_ICONS[topic.id]
-                        const totalCount = (count?.mcq || 0) + (count?.cq || 0)
-                        return (
-                          <Link
-                            key={topic.id}
-                            href={`/topics/${topic.id}`}
-                            className={`topic-link ${viewMode} ${isActive ? 'active' : ''}`}
-                          >
-                            <span className="topic-icon" style={{ '--icon-color': iconData.color } as React.CSSProperties}>
-                              {iconData.icon}
-                            </span>
-                            {viewMode === 'list' && (
-                              <>
-                                <span className="topic-name">{topic.name}</span>
-                                {totalCount > 0 && (
-                                  <div className="topic-pills">
-                                    <span className="pill pill-mcq">M: {count?.mcq || 0}</span>
-                                    <span className="pill pill-cq">C: {count?.cq || 0}</span>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                            {viewMode === 'grid' && (
-                              <div className="topic-card-content">
-                                <div className="topic-title">{topic.name}</div>
-                                {totalCount > 0 && (
-                                  <div className="topic-meta">
-                                    <span className="meta-item mcq">M: {count?.mcq || 0}</span>
-                                    <span className="meta-item cq">C: {count?.cq || 0}</span>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
+                <Link
+                  key={topic.id}
+                  href={`/topics/${topic.id}`}
+                  className={`topic-link grid ${isActive ? 'active' : ''}`}
+                >
+                  <span className="topic-icon" style={{ '--icon-color': iconData.color } as React.CSSProperties}>
+                    {iconData.icon}
+                  </span>
+                  <div className="topic-card-content">
+                    <div className="topic-title">{topic.name}</div>
+                    {totalCount > 0 && (
+                      <div className="topic-meta">
+                        <span className="meta-item mcq">M: {count?.mcq || 0}</span>
+                        <span className="meta-item cq">C: {count?.cq || 0}</span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
               )
             })}
-          </>
+          </div>
         )}
       </nav>
 
@@ -392,50 +310,11 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           transform: scale(0.9) rotate(90deg);
         }
 
-        .view-toggle {
-          display: flex;
-        }
-
         .sidebar-branding {
           display: flex;
           align-items: center;
           gap: 12px;
           flex: 1;
-        }
-
-        .view-toggle {
-          display: flex;
-          gap: 4px;
-          background: rgba(255, 255, 255, 0.08);
-          padding: 4px;
-          border-radius: 8px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .toggle-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 28px;
-          height: 28px;
-          border: none;
-          background: transparent;
-          color: rgba(255, 255, 255, 0.6);
-          cursor: pointer;
-          border-radius: 6px;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-          font-family: inherit;
-        }
-
-        .toggle-btn:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: rgba(255, 255, 255, 0.8);
-        }
-
-        .toggle-btn.active {
-          background: linear-gradient(135deg, rgba(96, 165, 250, 0.3), rgba(59, 130, 246, 0.2));
-          color: white;
-          border: 1px solid rgba(96, 165, 250, 0.4);
         }
 
         .brand-icon {
@@ -718,6 +597,19 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           }
         }
 
+        .topic-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .topic-list.grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 6px;
+          padding: 0 2px;
+        }
+
         .topic-link.grid {
           display: grid;
           grid-template-columns: 26px 1fr;
@@ -967,10 +859,6 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
             height: 36px;
           }
 
-          .view-toggle {
-            display: none;
-          }
-
           .topic-pills {
             display: none;
           }
@@ -1052,10 +940,6 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
           .brand-text {
             display: none;
-          }
-
-          .view-toggle {
-            display: none !important;
           }
 
           .sidebar-backdrop {
