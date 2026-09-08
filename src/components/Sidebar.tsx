@@ -312,7 +312,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           color: white;
           position: relative;
           transform: translateX(0);
-          transition: none;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .sidebar-backdrop {
@@ -322,7 +322,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
         @media (min-width: 641px) {
           .sidebar {
             transform: translateX(0);
-            transition: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             width: 320px;
             height: calc(100vh - 60px);
@@ -367,7 +367,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           flex-shrink: 0;
           align-items: center;
           justify-content: center;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
           padding: 0;
           z-index: 100;
@@ -415,7 +415,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           color: rgba(255, 255, 255, 0.6);
           cursor: pointer;
           border-radius: 6px;
-          transition: all 0.2s;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
         }
 
@@ -480,7 +480,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           border-radius: var(--radius-lg);
           padding: 10px 14px;
           color: rgba(255, 255, 255, 0.7);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           backdrop-filter: blur(10px);
         }
@@ -523,7 +523,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           color: rgba(255, 255, 255, 0.7);
           cursor: pointer;
           border-radius: 6px;
-          transition: all 0.2s;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           flex-shrink: 0;
         }
 
@@ -614,7 +614,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: var(--radius-lg);
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
           color: white;
           font-weight: 700;
@@ -632,7 +632,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           inset: 0;
           background: linear-gradient(90deg, rgba(96, 165, 250, 0.1) 0%, transparent 100%);
           opacity: 0;
-          transition: opacity 0.2s;
+          transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .category-header:hover {
@@ -670,7 +670,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
         .expand-icon {
           display: flex;
           align-items: center;
-          transition: transform 0.2s;
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           color: rgba(255, 255, 255, 0.7);
           position: relative;
           z-index: 1;
@@ -682,7 +682,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
 
         .category-items {
           margin-bottom: 8px;
-          animation: slideDown 0.2s ease-out;
+          animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .category-items.list {
@@ -720,6 +720,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), rgba(59, 130, 246, 0.06));
           border: 1.5px solid rgba(96, 165, 250, 0.25);
           align-items: flex-start;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .topic-link.grid:hover {
@@ -801,7 +802,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           color: rgba(255, 255, 255, 0.85);
           font-size: 13px;
           font-weight: 600;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.1);
@@ -816,7 +817,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           width: 3px;
           background: transparent;
           border-radius: 0 3px 3px 0;
-          transition: all 0.2s;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .topic-link:hover {
@@ -853,7 +854,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           height: 28px;
           color: var(--icon-color, #60a5fa);
           flex-shrink: 0;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           background: rgba(255, 255, 255, 0.1);
           border-radius: 8px;
           border: 1px solid rgba(255, 255, 255, 0.15);
@@ -920,7 +921,7 @@ export default function Sidebar({ counts = {} }: SidebarProps) {
           background: rgba(255, 255, 255, 0.08);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: var(--radius-md);
-          transition: all 0.2s;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .stat:hover {

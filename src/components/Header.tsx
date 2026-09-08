@@ -99,29 +99,6 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="header-stats">
-        <div className="stat-item">
-          <div className="stat-label">Topics</div>
-          <div className="stat-value">13</div>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-label">MCQs</div>
-          <div className="stat-value">156</div>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-label">CQs</div>
-          <div className="stat-value">48</div>
-        </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-label">Completion</div>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: '65%' }}></div>
-          </div>
-        </div>
-      </div>
 
       <style jsx>{`
         .app-header {
