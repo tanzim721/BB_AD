@@ -19,7 +19,18 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
 
   // Call all hooks at the top, before any conditional logic
   const { topics, loading: topicsLoading, error: topicsError } = useTopics()
-  const { questions, loading, addMCQ, addCQ, addBulk, deleteQuestion } = useQuestions(topicId)
+  const {
+    questions,
+    loading,
+    addMCQ,
+    addCQ,
+    addBulk,
+    deleteQuestion,
+    pagination,
+    page,
+    nextPage,
+    prevPage,
+  } = useQuestions(topicId)
 
   const [topic, setTopic] = useState<Topic | null>(null)
   const [topicLoaded, setTopicLoaded] = useState(false)
@@ -173,7 +184,40 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
                 <p>No MCQs yet. Add one manually or upload an image.</p>
               </div>
             ) : (
-              mcqs.map((q, idx) => <MCQCard key={q.id} question={q} onDelete={deleteQuestion} questionNumber={idx + 1} totalQuestions={mcqs.length} />)
+              <>
+                {mcqs.map((q, idx) => <MCQCard key={q.id} question={q} onDelete={deleteQuestion} questionNumber={idx + 1} totalQuestions={mcqs.length} />)}
+                {pagination && (
+                  <div className="pagination-controls">
+                    <div className="pagination-info">
+                      Page {page} of {pagination.totalPages} • {pagination.totalCount} total questions
+                    </div>
+                    <div className="pagination-buttons">
+                      <button
+                        className="pagination-btn"
+                        onClick={prevPage}
+                        disabled={!pagination.hasPrevPage}
+                        aria-label="Previous page"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        Previous
+                      </button>
+                      <button
+                        className="pagination-btn"
+                        onClick={nextPage}
+                        disabled={!pagination.hasNextPage}
+                        aria-label="Next page"
+                      >
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
@@ -189,7 +233,40 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
                 <p>No CQs yet. Use the &quot;Add CQ&quot; button above.</p>
               </div>
             ) : (
-              cqs.map((q, idx) => <CQCard key={q.id} question={q} onDelete={deleteQuestion} questionNumber={idx + 1} totalQuestions={cqs.length} />)
+              <>
+                {cqs.map((q, idx) => <CQCard key={q.id} question={q} onDelete={deleteQuestion} questionNumber={idx + 1} totalQuestions={cqs.length} />)}
+                {pagination && (
+                  <div className="pagination-controls">
+                    <div className="pagination-info">
+                      Page {page} of {pagination.totalPages} • {pagination.totalCount} total questions
+                    </div>
+                    <div className="pagination-buttons">
+                      <button
+                        className="pagination-btn"
+                        onClick={prevPage}
+                        disabled={!pagination.hasPrevPage}
+                        aria-label="Previous page"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        Previous
+                      </button>
+                      <button
+                        className="pagination-btn"
+                        onClick={nextPage}
+                        disabled={!pagination.hasNextPage}
+                        aria-label="Next page"
+                      >
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
@@ -483,6 +560,60 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
           font-weight: 500;
         }
 
+        .pagination-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          padding: 24px 0;
+          margin-top: 32px;
+          border-top: 1px solid var(--border-light);
+        }
+
+        .pagination-info {
+          font-size: 13px;
+          color: var(--text-secondary);
+          font-weight: 600;
+        }
+
+        .pagination-buttons {
+          display: flex;
+          gap: 10px;
+        }
+
+        .pagination-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 16px;
+          border: 1.5px solid var(--border-light);
+          border-radius: var(--radius-lg);
+          background: var(--surface-elevated);
+          color: var(--text-primary);
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          font-family: inherit;
+          transition: all 0.2s;
+          letter-spacing: -0.01em;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+          background: var(--accent-light);
+          border-color: var(--accent-primary);
+          color: var(--accent-primary);
+          transform: translateY(-1px);
+        }
+
+        .pagination-btn:active:not(:disabled) {
+          transform: translateY(0);
+        }
+
+        .pagination-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
         /* Mobile Responsive Design */
         @media (max-width: 768px) {
           .page-header {
@@ -657,6 +788,28 @@ export default function TopicPage({ params }: { params: Promise<{ id: string }> 
 
           .empty p {
             font-size: 13px;
+          }
+
+          .pagination-controls {
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px 0;
+          }
+
+          .pagination-info {
+            font-size: 12px;
+            text-align: center;
+          }
+
+          .pagination-buttons {
+            width: 100%;
+            gap: 8px;
+          }
+
+          .pagination-btn {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 12px;
           }
         }
       `}</style>

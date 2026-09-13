@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(req: NextRequest) {
   const topicId = req.nextUrl.searchParams.get('topicId')
   const subtopic = req.nextUrl.searchParams.get('subtopic')
+  const page = parseInt(req.nextUrl.searchParams.get('page') || '1')
+  const pageSize = parseInt(req.nextUrl.searchParams.get('pageSize') || '20')
 
   if (!topicId) {
     return NextResponse.json(
@@ -12,38 +14,87 @@ export async function GET(req: NextRequest) {
     )
   }
 
+  if (page < 1 || pageSize < 1) {
+    return NextResponse.json(
+      { error: 'page and pageSize must be greater than 0' },
+      { status: 400 }
+    )
+  }
+
   try {
-    // Fetch MCQ questions
+    // Get total count for MCQ questions
+    let mcqCountQuery = supabase
+      .from('mcq_questions')
+      .select('*', { count: 'exact', head: true })
+      .eq('topic_id', parseInt(topicId))
+
+    if (subtopic) {
+      mcqCountQuery = mcqCountQuery.eq('subtopic', subtopic)
+    }
+
+    const { count: mcqCount, error: mcqCountError } = await mcqCountQuery
+
+    // Get total count for CQ questions
+    let cqCountQuery = supabase
+      .from('cq_questions')
+      .select('*', { count: 'exact', head: true })
+      .eq('topic_id', parseInt(topicId))
+
+    if (subtopic) {
+      cqCountQuery = cqCountQuery.eq('subtopic', subtopic)
+    }
+
+    const { count: cqCount, error: cqCountError } = await cqCountQuery
+
+    const totalCount = (mcqCount || 0) + (cqCount || 0)
+
+    // Calculate offset and limits for MCQ and CQ
+    const offset = (page - 1) * pageSize
+    const mcqLimit = pageSize
+    const mcqOffset = offset
+
+    // Fetch paginated MCQ questions
     let mcqQuery = supabase
       .from('mcq_questions')
       .select('*')
       .eq('topic_id', parseInt(topicId))
+      .order('created_at', { ascending: false })
+      .range(mcqOffset, mcqOffset + mcqLimit - 1)
 
     if (subtopic) {
       mcqQuery = mcqQuery.eq('subtopic', subtopic)
     }
 
-    const { data: mcqs, error: mcqError } = await mcqQuery.order('created_at', {
-      ascending: false,
-    })
+    const { data: mcqs, error: mcqError } = await mcqQuery
 
-    // Fetch CQ questions
-    let cqQuery = supabase
-      .from('cq_questions')
-      .select('*')
-      .eq('topic_id', parseInt(topicId))
+    // Fetch CQ questions (if needed - if MCQ doesn't fill the page)
+    let cqs = []
+    if ((mcqs?.length || 0) < pageSize) {
+      const cqNeeded = pageSize - (mcqs?.length || 0)
+      let cqQuery = supabase
+        .from('cq_questions')
+        .select('*')
+        .eq('topic_id', parseInt(topicId))
+        .order('created_at', { ascending: false })
+        .range(0, cqNeeded - 1)
 
-    if (subtopic) {
-      cqQuery = cqQuery.eq('subtopic', subtopic)
+      if (subtopic) {
+        cqQuery = cqQuery.eq('subtopic', subtopic)
+      }
+
+      const { data: cqData, error: cqError } = await cqQuery
+      if (cqError) {
+        return NextResponse.json(
+          { error: cqError.message },
+          { status: 500 }
+        )
+      }
+      cqs = cqData || []
     }
 
-    const { data: cqs, error: cqError } = await cqQuery.order('created_at', {
-      ascending: false,
-    })
-
-    if (mcqError || cqError) {
+    if (mcqError) {
       return NextResponse.json(
-        { error: mcqError?.message || cqError?.message },
+        { error: mcqError.message },
         { status: 500 }
       )
     }
@@ -78,7 +129,19 @@ export async function GET(req: NextRequest) {
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
 
-    return NextResponse.json({ questions: allQuestions })
+    const totalPages = Math.ceil(totalCount / pageSize)
+
+    return NextResponse.json({
+      questions: allQuestions,
+      pagination: {
+        page,
+        pageSize,
+        totalCount,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      }
+    })
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Server error' },

@@ -3,18 +3,32 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Question } from '@/types'
 
+export interface PaginationInfo {
+  page: number
+  pageSize: number
+  totalCount: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
+}
+
 export function useQuestions(topicId: number | null, subtopic?: string) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
+  const [pagination, setPagination] = useState<PaginationInfo | null>(null)
 
-  const fetchQuestions = useCallback(async () => {
+  const fetchQuestions = useCallback(async (pageNum: number = 1) => {
     if (!topicId) return
     setLoading(true)
     setError(null)
     try {
       const params = new URLSearchParams()
       params.append('topicId', topicId.toString())
+      params.append('page', pageNum.toString())
+      params.append('pageSize', pageSize.toString())
       if (subtopic) params.append('subtopic', subtopic)
 
       const res = await fetch(`/api/questions?${params}`)
@@ -27,17 +41,40 @@ export function useQuestions(topicId: number | null, subtopic?: string) {
       }
 
       setQuestions(data.questions || [])
+      setPagination(data.pagination || null)
+      setPage(pageNum)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch questions')
       setQuestions([])
     } finally {
       setLoading(false)
     }
-  }, [topicId, subtopic])
+  }, [topicId, subtopic, pageSize])
 
   useEffect(() => {
-    fetchQuestions()
+    fetchQuestions(1)
   }, [fetchQuestions])
+
+  const goToPage = async (pageNum: number) => {
+    if (!pagination) return
+    if (pageNum < 1 || pageNum > pagination.totalPages) return
+    await fetchQuestions(pageNum)
+  }
+
+  const nextPage = async () => {
+    if (!pagination || !pagination.hasNextPage) return
+    await goToPage(page + 1)
+  }
+
+  const prevPage = async () => {
+    if (!pagination || !pagination.hasPrevPage) return
+    await goToPage(page - 1)
+  }
+
+  const setPageSizeAndRefetch = async (newPageSize: number) => {
+    setPageSize(newPageSize)
+    await fetchQuestions(1)
+  }
 
   const addMCQ = async (q: any) => {
     return addBulk([q])
@@ -62,8 +99,8 @@ export function useQuestions(topicId: number | null, subtopic?: string) {
         return { error: data.error || 'Failed to add questions' }
       }
 
-      // Refetch questions after adding
-      await fetchQuestions()
+      // Refetch questions on first page after adding
+      await fetchQuestions(1)
       return { error: null }
     } catch (err) {
       return { error: err instanceof Error ? err.message : 'Failed to add questions' }
@@ -81,13 +118,29 @@ export function useQuestions(topicId: number | null, subtopic?: string) {
         return { error: data.error || 'Failed to delete question' }
       }
 
-      // Remove from local state
-      setQuestions((prev) => prev.filter((q) => q.id !== id))
+      // Refetch current page after deletion
+      await fetchQuestions(page)
       return { error: null }
     } catch (err) {
       return { error: err instanceof Error ? err.message : 'Failed to delete question' }
     }
   }
 
-  return { questions, loading, error, addMCQ, addCQ, addBulk, deleteQuestion, refetch: fetchQuestions }
+  return {
+    questions,
+    loading,
+    error,
+    addMCQ,
+    addCQ,
+    addBulk,
+    deleteQuestion,
+    refetch: fetchQuestions,
+    pagination,
+    page,
+    pageSize,
+    goToPage,
+    nextPage,
+    prevPage,
+    setPageSizeAndRefetch,
+  }
 }
